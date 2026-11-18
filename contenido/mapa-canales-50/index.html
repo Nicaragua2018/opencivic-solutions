@@ -51,6 +51,24 @@ legend{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:upperc
 .status{font-size:13.5px;color:var(--muted)}
 .status.err{color:var(--warn)}
 .combo{font-size:13.5px;color:var(--ink);background:var(--exp-soft);border-radius:8px;padding:8px 12px}
+.chip .x{margin-left:6px;opacity:.7}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.assistant{border:1px solid var(--exp);background:var(--exp-soft);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.asis-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;justify-content:space-between}
+.asis-ask{display:flex;gap:8px;flex-wrap:wrap}
+.asis-input{font:inherit;font-size:14px;flex:1 1 280px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.asis-input:focus-visible{outline:3px solid var(--exp);outline-offset:2px}
+.sugs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sug{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.sug h4{margin:0;font-family:var(--display);font-size:15px}
+.sug dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:12.5px}
+.sug dt{color:var(--muted)}
+.sug dd{margin:0;min-width:0}
+.sug .why{font-size:13px;color:var(--muted)}
+.sug .ex{font-size:13px;font-style:italic}
+.sug .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.sug .btn{font-size:13px;padding:7px 11px}
+@media (max-width:860px){.sugs{grid-template-columns:1fr}}
 
 /* pestañas de planes */
 .tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
@@ -98,7 +116,19 @@ footer{color:var(--muted);font-size:13px;max-width:78ch}
   </header>
 
   <div class="explorer" id="explorer">
-    <h2>Explorar otra combinación <small>Elige una opción por fila o escribe la tuya</small></h2>
+    <h2>Explorar otra combinación <small>Combina hasta 3 opciones por fila; escribe la tuya y pulsa Enter</small></h2>
+    <div class="assistant" aria-labelledby="h-asis">
+      <div class="asis-head">
+        <h3 id="h-asis">Asistente de sugerencias</h3>
+        <span class="status" id="asis-status" role="status"></span>
+      </div>
+      <div class="asis-ask">
+        <label class="sr" for="asis-q">¿Qué buscas?</label>
+        <input class="asis-input" id="asis-q" type="text" maxlength="200" placeholder="Opcional: describe lo que buscas, p. ej. «algo emotivo para abuelos migrantes en Navidad»">
+        <button class="btn" id="asis-go" type="button">Sugerir combinaciones</button>
+      </div>
+      <div class="sugs" id="sugs"></div>
+    </div>
     <fieldset><legend>Público</legend><div class="chips" data-group="aud"></div></fieldset>
     <fieldset><legend>Nicho o tema</legend><div class="chips" data-group="nic"></div></fieldset>
     <fieldset><legend>Formato de referencia</legend><div class="chips" data-group="fmt"></div></fieldset>
@@ -209,18 +239,40 @@ let draft = null;           // plan generado y aún no guardado
 let current = "fe";
 
 /* ---------- selector de combinación ---------- */
-const pick = { aud: LIB.aud[0], nic: LIB.nic[0], fmt: LIB.fmt[0], sty: LIB.sty[0] };
+const MAX = 3;
+const GROUPS = ["aud","nic","fmt","sty"];
+const GLABEL = { aud:"Público", nic:"Nicho", fmt:"Formato", sty:"Estilo" };
+const custom = { aud:[], nic:[], fmt:[], sty:[] };      // opciones escritas por la persona o traídas por el asistente
+const pick = { aud:[LIB.aud[0], LIB.aud[1]], nic:[LIB.nic[0], LIB.nic[1]], fmt:[LIB.fmt[0]], sty:[LIB.sty[0]] };
+const joinV = v => Array.isArray(v) ? v.join(" + ") : String(v ?? "");
+const comboText = c => GROUPS.map(g => joinV(c[g])).join(" · ");
+
+function chipsHtml(g){
+  const opts = [...LIB[g], ...custom[g]];
+  return opts.map(v => `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="${pick[g].includes(v)}">${esc(v)}${custom[g].includes(v) ? '<span class="x" aria-hidden="true">✎</span>' : ""}</button>`).join("")
+    + `<input class="other" id="other-${g}" type="text" maxlength="80" placeholder="${OTHER_LABEL[g]}" aria-label="${OTHER_LABEL[g]} (pulsa Enter para añadirlo)">`;
+}
+function addOption(g, v){
+  v = String(v || "").trim().slice(0, 80); if (!v) return;
+  if (!LIB[g].includes(v) && !custom[g].includes(v)) custom[g].push(v);
+  if (!pick[g].includes(v)) { pick[g].push(v); if (pick[g].length > MAX) pick[g].shift(); }
+}
 function buildChips(){
   document.querySelectorAll(".chips").forEach(box => {
     const g = box.dataset.group;
-    box.innerHTML = LIB[g].map(v => `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="false">${esc(v)}</button>`).join("")
-      + `<input class="other" id="other-${g}" type="text" maxlength="80" placeholder="${OTHER_LABEL[g]}" aria-label="${OTHER_LABEL[g]}">`;
+    box.innerHTML = chipsHtml(g);
+    if (box.dataset.wired) return; box.dataset.wired = "1";
     box.addEventListener("click", e => {
       const b = e.target.closest(".chip"); if (!b) return;
-      pick[g] = b.dataset.v; $("other-" + g).value = ""; syncChips();
+      const v = b.dataset.v, i = pick[g].indexOf(v);
+      if (i >= 0) { if (pick[g].length > 1) pick[g].splice(i, 1); else setStatus("Deja al menos una opción en «" + GLABEL[g] + "».", true); }
+      else if (pick[g].length >= MAX) setStatus("Máximo " + MAX + " opciones en «" + GLABEL[g] + "». Quita una para añadir otra.", true);
+      else pick[g].push(v);
+      syncChips();
     });
-    box.querySelector(".other").addEventListener("input", e => {
-      const v = e.target.value.trim(); if (v) { pick[g] = v; syncChips(); }
+    box.addEventListener("keydown", e => {
+      if (e.key !== "Enter" || !e.target.classList.contains("other")) return;
+      e.preventDefault(); addOption(g, e.target.value); buildChips(); syncChips(); $("other-" + g).focus();
     });
   });
   syncChips();
@@ -228,14 +280,85 @@ function buildChips(){
 function syncChips(){
   document.querySelectorAll(".chips").forEach(box => {
     const g = box.dataset.group;
-    box.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.v === pick[g] ? "true" : "false"));
+    box.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", pick[g].includes(c.dataset.v) ? "true" : "false"));
   });
-  $("combo").innerHTML = `<strong>Combinación:</strong> ${esc(pick.aud)} · ${esc(pick.nic)} · ${esc(pick.fmt)} · ${esc(pick.sty)}`;
+  $("combo").innerHTML = `<strong>Tu combinación:</strong> ${esc(comboText(pick))}`;
 }
+function applyCombo(c){
+  for (const g of GROUPS) {
+    const vals = (Array.isArray(c[g]) ? c[g] : [c[g]]).map(v => String(v || "").trim()).filter(Boolean).slice(0, MAX);
+    if (!vals.length) continue;
+    pick[g] = [];
+    vals.forEach(v => addOption(g, v));
+  }
+  buildChips();
+}
+const sampleN = (arr, n) => [...arr].sort(() => Math.random() - .5).slice(0, n);
 $("surprise").addEventListener("click", () => {
-  for (const g of Object.keys(LIB)) { pick[g] = LIB[g][Math.floor(Math.random() * LIB[g].length)]; const o = $("other-" + g); if (o) o.value = ""; }
-  syncChips();
+  applyCombo({ aud:sampleN(LIB.aud, 2), nic:sampleN(LIB.nic, 2), fmt:sampleN(LIB.fmt, 1 + (Math.random() < .5)), sty:sampleN(LIB.sty, 1) });
+  setStatus("Combinación al azar lista. Genera el plan o pide sugerencias al asistente.");
 });
+
+/* ---------- asistente de sugerencias ---------- */
+const STARTER = [
+  { name:"Abuelos protectores en Navidad", aud:["Abuelos que cuidan a sus nietos","Migrantes latinos 50+"], nic:["Estafas contadas como historias","Parábolas y fe"], fmt:["Parábola en serie con narrador"], sty:["Emotivo y tierno"], why:"Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas.", ex:"El regalo de Navidad que nunca llegó" },
+  { name:"Misterios del pueblo con acertijo", aud:["Diáspora centroamericana","Amantes de la historia latinoamericana"], nic:["Leyendas y misterios del pueblo","Migración y raíces"], fmt:["Historia-acertijo con pausa","Misterio con mapas"], sty:["Misterio y suspenso"], why:"La nostalgia del pueblo más un enigma que el público intenta resolver retiene hasta el final.", ex:"Nadie volvió a abrir la casa del cerro… hasta 1987" },
+  { name:"Viudos que vuelven a empezar", aud:["Viudas y viudos","Personas 60+ que viven solas"], nic:["Segundas oportunidades","Bienestar emocional"], fmt:["Caso real con giro final","Cuento largo para dormir"], sty:["Inspirador","Nostálgico"], why:"Un público que busca compañía y esperanza, con poca oferta cuidada en español.", ex:"El viudo que volvió a bailar en la boda de su nieta" }
+];
+function renderSugs(list, origin){
+  $("sugs").innerHTML = list.map((s, i) => `
+    <article class="sug">
+      <h4>${esc(s.name || "Sugerencia " + (i + 1))}</h4>
+      <dl>${GROUPS.map(g => `<dt>${GLABEL[g]}</dt><dd>${esc(joinV(s[g]))}</dd>`).join("")}</dl>
+      ${s.why ? `<p class="why">${esc(s.why)}</p>` : ""}
+      ${s.ex ? `<p class="ex">Título de ejemplo: «${esc(s.ex)}»</p>` : ""}
+      <div class="row">
+        <button class="btn" type="button" data-use="${i}">Usar esta combinación</button>
+        <button class="btn primary" type="button" data-gen="${i}">Usar y generar plan</button>
+      </div>
+    </article>`).join("");
+  $("sugs").dataset.origin = origin;
+  sugList = list;
+}
+let sugList = [];
+$("sugs").addEventListener("click", e => {
+  const u = e.target.closest("[data-use]"), g = e.target.closest("[data-gen]");
+  const i = Number((u || g)?.dataset.use ?? (u || g)?.dataset.gen);
+  if (!(u || g) || !sugList[i]) return;
+  applyCombo(sugList[i]);
+  setAsis("Combinación aplicada: " + (sugList[i].name || ""));
+  if (g && !$("gen").disabled) $("gen").click();
+});
+function setAsis(t, err){ const s = $("asis-status"); s.textContent = t; s.classList.toggle("err", !!err); }
+function sugPrompt(q){
+  return `Eres un asistente que sugiere combinaciones para canales de YouTube automatizados en español, pensados para verse en Smart TV, con historias evergreen de curiosidad y emoción (ganchos, bucles abiertos, moralejas).
+Opciones disponibles (puedes proponer otras nuevas si encajan mejor):
+- Públicos: ${LIB.aud.join("; ")}
+- Nichos: ${LIB.nic.join("; ")}
+- Formatos: ${LIB.fmt.join("; ")}
+- Estilos: ${LIB.sty.join("; ")}
+Selección actual de la persona: ${comboText(pick)}
+Lo que busca: ${q || "(no lo dijo; parte de su selección actual y propón variaciones que la mejoren)"}
+
+Propón 3 combinaciones distintas entre sí. Cada una combina 2 públicos, 2 nichos, 1 o 2 formatos y 1 o 2 estilos que se potencian entre sí. Sin política partidista ni consejos médicos.
+Responde SOLO con un array JSON de 3 objetos con esta forma:
+[{"name": "nombre corto (2-5 palabras)", "aud": ["...","..."], "nic": ["...","..."], "fmt": ["..."], "sty": ["..."], "why": "por qué funciona, en una frase", "ex": "un título de capítulo de ejemplo"}]`;
+}
+let sugCtl = null;
+$("asis-go").addEventListener("click", async () => {
+  if (!sample) { setAsis("El asistente no está disponible en esta vista; prueba las sugerencias de abajo.", true); return; }
+  sugCtl?.abort(); sugCtl = new AbortController();
+  $("asis-go").disabled = true; setAsis("Pensando sugerencias…");
+  try {
+    const raw = await sample.json(sugPrompt($("asis-q").value.trim()), { signal: sugCtl.signal, cache: false });
+    const list = (Array.isArray(raw) ? raw : raw?.sugerencias || []).slice(0, 3).filter(s => s && typeof s === "object" && s.aud && s.nic);
+    if (!list.length) throw { code:"invalid_json" };
+    renderSugs(list, "claude"); setAsis("Tres sugerencias nuevas. Elige una o pide otras.");
+  } catch (e) {
+    if (e?.code !== "cancelled") setAsis(ERR[e?.code] || "No se pudieron generar sugerencias. Inténtalo de nuevo.", true);
+  } finally { $("asis-go").disabled = false; }
+});
+$("asis-q").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("asis-go").click(); } });
 
 /* ---------- generación con Claude ---------- */
 let sample = null, ctl = null;
@@ -247,13 +370,14 @@ function setStatus(t, err){ const s = $("status"); s.textContent = t; s.classLis
 
 function promptFor(p){
   return `Eres estratega de canales de YouTube automatizados (sin mostrar la cara) en español latino neutro, para verse en Smart TV.
-Diseña un plan para esta combinación:
-- Público: ${p.aud}
-- Nicho o tema: ${p.nic}
-- Formato de referencia (inspirado en formatos que funcionan en otros nichos): ${p.fmt}
-- Estilo emocional: ${p.sty}
+Diseña UN plan que fusione todas estas opciones en un solo canal coherente (no un plan por opción):
+- Públicos: ${joinV(p.aud)}
+- Nichos o temas: ${joinV(p.nic)}
+- Formatos de referencia (inspirados en formatos que funcionan en otros nichos): ${joinV(p.fmt)}
+- Estilos emocionales: ${joinV(p.sty)}
 
 Reglas:
+- Cuando haya varias opciones en una fila, el perfil y las series deben cruzarlas (por ejemplo, una serie que une los dos nichos para los dos públicos).
 - Contenido evergreen, con historias que apelen a la curiosidad y la emoción (ganchos, bucles abiertos, giros, moralejas).
 - Las historias son de ficción declarada; nada de consejos médicos, legales o financieros personalizados; sin política partidista.
 - Si el tema toca a menores, sin detalles que puedan imitarse.
@@ -297,7 +421,8 @@ $("gen").addEventListener("click", async () => {
   try {
     const raw = await sample.json(promptFor(pick), { signal: ctl.signal, cache: fresh ? false : true });
     const plan = normalize(raw);
-    draft = { id: "x" + Date.now().toString(36), c:"var(--exp)", soft:"var(--exp-soft)", pill:"Nuevo", combo:{...pick}, ...plan };
+    draft = { id: "x" + Date.now().toString(36), c:"var(--exp)", soft:"var(--exp-soft)", pill:"Nuevo",
+      combo:{ aud:[...pick.aud], nic:[...pick.nic], fmt:[...pick.fmt], sty:[...pick.sty] }, ...plan };
     setStatus("Listo. Si te gusta, guárdalo en tus exploraciones.");
     current = draft.id; renderTabs(); show();
     $("plan-title").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start" });
@@ -343,7 +468,7 @@ function show(){
   $("profile").innerHTML =
     `<div><b>Quiénes son</b><span>${esc(p.who)}</span></div><div><b>Qué buscan</b><span>${esc(p.want)}</span></div>
      <div><b>Qué sienten</b><span>${esc(p.feel)}</span></div><div><b>Cómo ven</b><span>${esc(p.watch)}</span></div>`
-     + (a.combo ? `<div style="grid-column:1/-1"><b>Combinación explorada</b><span>${esc(a.combo.aud)} · ${esc(a.combo.nic)} · ${esc(a.combo.fmt)} · ${esc(a.combo.sty)}</span></div>` : "");
+     + (a.combo ? `<div style="grid-column:1/-1"><b>Combinación explorada</b><span>${esc(comboText(a.combo))}</span></div>` : "");
   $("fmt-count").textContent = `${a.formats.length} formatos`;
   $("formats").innerHTML = a.formats.map(f =>
     `<article class="fmt"><span class="dur">${esc(f.d)}</span><h3>${esc(f.n)}</h3><p>${esc(f.p)}</p><span class="ref">${esc(f.r)}</span></article>`).join("");
@@ -365,7 +490,7 @@ $("remove").addEventListener("click", () => {
 });
 function asText(a){
   const p = a.profile || {};
-  return [`${a.name}`, a.combo ? `Combinación: ${a.combo.aud} · ${a.combo.nic} · ${a.combo.fmt} · ${a.combo.sty}` : "",
+  return [`${a.name}`, a.combo ? `Combinación: ${comboText(a.combo)}` : "",
     `Público: ${p.who}`, `Buscan: ${p.want}`, `Sienten: ${p.feel}`, `Ven: ${p.watch}`, "", "FORMATOS",
     ...a.formats.map((f, i) => `${i + 1}. ${f.n} (${f.d}): ${f.p} ${f.r}`), "", "SERIES",
     ...a.series.flatMap((s, i) => [`${i + 1}. ${s.t} — ${s.tag}`, ...s.caps.map((c, j) => `   Cap. ${j + 1}: ${c}`), `   Moraleja: ${s.m}`])
@@ -383,6 +508,8 @@ $("copy").addEventListener("click", () => {
 });
 
 buildChips();
+renderSugs(STARTER, "starter");
+setAsis("Tres ideas para empezar. Pide más con o sin descripción.");
 const h0 = location.hash.slice(1); if (all().some(a => a.id === h0)) current = h0;
 renderTabs(); show();
 </script>
