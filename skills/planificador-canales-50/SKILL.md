@@ -38,6 +38,8 @@ Usa siempre esta estructura, porque es la que la persona ya conoce y la que alim
 
 ```
 # [Nombre del plan, 2–5 palabras]
+[Resumen en 5 líneas o menos: qué canal, para quién, por qué funciona y por dónde empezar]
+
 Combinación: [públicos] · [nichos] · [formatos] · [estilos]
 
 ## Público
@@ -88,4 +90,4 @@ Repasa `references/politicas.md`. Lo esencial: ficción declarada, consejos prá
 - Si quiere **explorar por su cuenta** (elegir opciones, combinar, pedir sugerencias y guardar planes), parte de `assets/explorador.html`: es la página interactiva original con los tres planes base, la biblioteca de opciones y la generación con Claude (capacidad `sample`). Personaliza sus listas `LIB` y `PRESETS` en lugar de escribirla desde cero.
 
 ## Tono
-Español latino neutro, cálido y directo. Títulos que despierten curiosidad sin mentir: lo que promete el título y la miniatura lo cumple el capítulo. Las víctimas de un engaño nunca son tontas: el engaño funciona porque usa el amor, la soledad o la esperanza.
+Español latino neutro, cálido y directo, en lenguaje llano: quien lee suele no ser técnico. Explica cualquier término técnico la primera vez o usa la palabra común. Ve al grano: la investigación y los filtros se muestran de forma compacta, no como un informe interminable. Títulos que despierten curiosidad sin mentir: lo que promete el título y la miniatura lo cumple el capítulo. Las víctimas de un engaño nunca son tontas: el engaño funciona porque usa el amor, la soledad o la esperanza.

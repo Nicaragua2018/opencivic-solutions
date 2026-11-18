@@ -72,7 +72,8 @@ Puntúa cada filtro de 1 a 3 (bajo, medio, alto), o con palabras si prefieres no
 - Un título de ejemplo propio de esa idea.
 
 ## 6. Cómo mostrar el recorrido
-Que se vea el embudo, sin convertirlo en un informe interminable:
+Que se vea el embudo, sin convertirlo en un informe interminable. Quien lee suele no ser técnico: empieza por lo que necesita decidir y deja el detalle para después.
+0. **Resumen en 5 líneas o menos al principio**: qué recomiendas, por qué y qué tiene que hacer ahora.
 1. **Contexto asumido**, en 1–2 líneas.
 2. **Candidatas exploradas**: lista breve (8 o más) con su dolor en pocas palabras.
 3. **Lo que dice la investigación**: 3–6 hallazgos con su fuente o marcados como estimación.
@@ -80,11 +81,17 @@ Que se vea el embudo, sin convertirlo en un informe interminable:
 5. **Las 3 finalistas**, con la información del punto 5.
 6. **Siguiente paso**: elegir, combinar, o validar a mano con la lista de comprobación.
 
+Para que se lea bien:
+- La tabla de filtros, compacta: las candidatas en filas y una puntuación total, o los 3–4 filtros que más pesan; el resto, en una línea. Si es grande, ponla al final como anexo.
+- Lenguaje llano. Si usas un término técnico (outlier, RPM, evergreen, CTR, A/B), explícalo la primera vez entre paréntesis, o usa la palabra común ("vídeos que superan a su canal", "lo que paga YouTube por cada mil vistas", "contenido que no caduca").
+- Nada de abreviaturas internas como "S1 C1": escribe "serie 1, capítulo 1".
+
 Cuando la persona ya trae una combinación cerrada, no repitas todo el embudo: haz una **revisión rápida** de esa combinación con los filtros (dónde es fuerte, dónde flojea, qué ajustar) y la investigación que la respalde, y sigue con el plan.
 
 ## 7. Cómo evitar respuestas genéricas y repetitivas
 - **Las combinaciones de partida y los planes de ejemplo son ejemplos de calidad, no respuestas.** No los repitas tal cual. Úsalos solo si la investigación y los filtros los vuelven a elegir para esta persona, y entonces explica por qué.
 - **No reutilices los personajes, nombres ni lugares de los ejemplos** (el abuelo Tomás, doña Carmen, el barrio de San Miguel, Ramón el jardinero). Crea un narrador, un universo y nombres propios para cada plan.
+- **Elige los nombres con intención, no los primeros que salen.** Toma nombres propios del país, la región y la época de los personajes, y evita los que se repiten por costumbre (por ejemplo, Aurelio, Rosario, Carmen, Tomás). Lo mismo con los oficios y los arranques: no empieces siempre con una cifra de días o años ("Cuarenta días…").
 - **No reutilices títulos de los ejemplos.** Cada título nace del dolor, del público y del lugar de ese plan.
 - Varía las estructuras de título: pregunta, contradicción, cifra (solo si es real), confesión, objeto misterioso, lugar, fecha.
 - Usa detalles concretos del contexto: un país, una fecha, un oficio, una comida, una costumbre local. Lo concreto es lo que hace que un plan no parezca de plantilla.
