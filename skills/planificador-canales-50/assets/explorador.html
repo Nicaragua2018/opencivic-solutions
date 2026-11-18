@@ -1,0 +1,515 @@
+<title>Mapa de canales 50+</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: cabecera → explorador (público × nicho × formato × estilo) → pestañas de planes → perfil → 5 formatos → 7 series */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --ink:#1d2230; --muted:#5b6275; --line:#dfe2ea;
+  --lamp:#b8730f; --fe:#b8730f; --prot:#127a73; --sab:#7a3d8c; --exp:#2f5bd3;
+  --fe-soft:#fbf1e1; --prot-soft:#e2f3f1; --sab-soft:#f3e8f6; --exp-soft:#e6ecfb;
+  --warn:#9a3b12;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151d; --surface:#1b1f2a; --ink:#eceef4; --muted:#a3a9b8; --line:#2c3242;
+  --lamp:#f0a83a; --fe:#f0a83a; --prot:#3fc2b8; --sab:#c98bdb; --exp:#7ea2ff;
+  --fe-soft:#2c2416; --prot-soft:#132a29; --sab-soft:#291c2e; --exp-soft:#1a2340; --warn:#f2a47c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151d; --surface:#1b1f2a; --ink:#eceef4; --muted:#a3a9b8; --line:#2c3242;
+  --lamp:#f0a83a; --fe:#f0a83a; --prot:#3fc2b8; --sab:#c98bdb; --exp:#7ea2ff;
+  --fe-soft:#2c2416; --prot-soft:#132a29; --sab-soft:#291c2e; --exp-soft:#1a2340; --warn:#f2a47c; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;--c:var(--fe);--soft:var(--fe-soft)}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:26px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800}
+h2{font-size:22px;font-weight:800}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:8px;max-width:72ch}
+header .lead{color:var(--muted);font-size:16px}
+
+/* explorador */
+.explorer{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:16px}
+.explorer h2{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.explorer h2 small{font-family:var(--body);font-weight:500;font-size:13px;color:var(--muted)}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+legend{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{all:unset;cursor:pointer;font-size:13.5px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.chip:hover{border-color:var(--exp)}
+.chip[aria-pressed="true"]{background:var(--exp);border-color:var(--exp);color:var(--surface)}
+.chip:focus-visible,.btn:focus-visible,.tab:focus-visible,.other:focus-visible{outline:3px solid var(--exp);outline-offset:2px}
+.other{font:inherit;font-size:13.5px;padding:6px 11px;border-radius:999px;border:1px dashed var(--line);background:var(--bg);color:var(--ink);min-width:0;width:220px;max-width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{all:unset;cursor:pointer;font-weight:600;font-size:14px;padding:9px 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.btn.primary{background:var(--exp);border-color:var(--exp);color:var(--surface)}
+.btn[disabled]{opacity:.5;cursor:default}
+.status{font-size:13.5px;color:var(--muted)}
+.status.err{color:var(--warn)}
+.combo{font-size:13.5px;color:var(--ink);background:var(--exp-soft);border-radius:8px;padding:8px 12px}
+.chip .x{margin-left:6px;opacity:.7}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.assistant{border:1px solid var(--exp);background:var(--exp-soft);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.asis-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;justify-content:space-between}
+.asis-ask{display:flex;gap:8px;flex-wrap:wrap}
+.asis-input{font:inherit;font-size:14px;flex:1 1 280px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.asis-input:focus-visible{outline:3px solid var(--exp);outline-offset:2px}
+.sugs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sug{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.sug h4{margin:0;font-family:var(--display);font-size:15px}
+.sug dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:12.5px}
+.sug dt{color:var(--muted)}
+.sug dd{margin:0;min-width:0}
+.sug .why{font-size:13px;color:var(--muted)}
+.sug .ex{font-size:13px;font-style:italic}
+.sug .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.sug .btn{font-size:13px;padding:7px 11px}
+@media (max-width:860px){.sugs{grid-template-columns:1fr}}
+
+/* pestañas de planes */
+.tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.tab{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0;position:relative}
+.tab .who{font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink);padding-right:70px}
+.tab .hint{color:var(--muted);font-size:13px}
+.tab .pill{position:absolute;top:12px;right:12px;font-size:11px;font-weight:600;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:1px 8px}
+.tab[aria-selected="true"]{border-color:var(--c);box-shadow:inset 0 -4px 0 var(--c);background:var(--soft)}
+
+.plan-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.plan-bar h2{font-size:24px}
+.profile{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--soft);border-radius:12px;padding:18px}
+.profile div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.profile b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+section{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.formats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.fmt{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fmt .dur{font-size:12px;font-weight:600;color:var(--c);font-variant-numeric:tabular-nums}
+.fmt p{font-size:13.5px;color:var(--muted)}
+.fmt .ref{font-size:12.5px;color:var(--ink);border-top:1px solid var(--line);padding-top:8px;margin-top:auto}
+.series{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ser{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ser-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.num{font-family:var(--display);font-weight:800;font-size:13px;color:var(--c);white-space:nowrap}
+.tag{font-size:12.5px;color:var(--ink);font-weight:600}
+ol.caps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:c}
+ol.caps li{counter-increment:c;display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:baseline;font-size:14.5px}
+ol.caps li::before{content:"Cap. " counter(c);font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.moral{font-size:13px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:8px}
+textarea.copyfallback{width:100%;min-height:160px;font:12.5px/1.4 ui-monospace,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px;box-sizing:border-box}
+footer{color:var(--muted);font-size:13px;max-width:78ch}
+@media (max-width:980px){.formats{grid-template-columns:repeat(2,minmax(0,1fr))}.profile{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.series,.formats,.profile{grid-template-columns:1fr}.other{width:100%}}
+@media (prefers-reduced-motion:no-preference){.tab,.chip{transition:background .15s,border-color .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Plan de canales evergreen · noviembre 2026</span>
+    <h1>Mapa de canales 50+</h1>
+    <p class="lead">Explora combinaciones de público, nicho y formato. Mira los tres planes base o pide a Claude un plan nuevo con 5 formatos y 7 series con sus capítulos.</p>
+  </header>
+
+  <div class="explorer" id="explorer">
+    <h2>Explorar otra combinación <small>Combina hasta 3 opciones por fila; escribe la tuya y pulsa Enter</small></h2>
+    <div class="assistant" aria-labelledby="h-asis">
+      <div class="asis-head">
+        <h3 id="h-asis">Asistente de sugerencias</h3>
+        <span class="status" id="asis-status" role="status"></span>
+      </div>
+      <div class="asis-ask">
+        <label class="sr" for="asis-q">¿Qué buscas?</label>
+        <input class="asis-input" id="asis-q" type="text" maxlength="200" placeholder="Opcional: describe lo que buscas, p. ej. «algo emotivo para abuelos migrantes en Navidad»">
+        <button class="btn" id="asis-go" type="button">Sugerir combinaciones</button>
+      </div>
+      <div class="sugs" id="sugs"></div>
+    </div>
+    <fieldset><legend>Público</legend><div class="chips" data-group="aud"></div></fieldset>
+    <fieldset><legend>Nicho o tema</legend><div class="chips" data-group="nic"></div></fieldset>
+    <fieldset><legend>Formato de referencia</legend><div class="chips" data-group="fmt"></div></fieldset>
+    <fieldset><legend>Estilo emocional</legend><div class="chips" data-group="sty"></div></fieldset>
+    <div class="combo" id="combo"></div>
+    <div class="actions">
+      <button class="btn primary" id="gen" type="button">Generar plan con Claude</button>
+      <button class="btn" id="surprise" type="button">Combinación al azar</button>
+      <button class="btn" id="stop" type="button" hidden>Detener</button>
+      <span class="status" id="status" role="status"></span>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Planes" id="tabs"></div>
+
+  <div class="plan-bar">
+    <h2 id="plan-title"></h2>
+    <div class="actions">
+      <button class="btn" id="save" type="button" hidden>Guardar en mis exploraciones</button>
+      <button class="btn" id="remove" type="button" hidden>Quitar de mis exploraciones</button>
+      <button class="btn" id="copy" type="button">Copiar como texto</button>
+    </div>
+  </div>
+  <div id="copybox" hidden></div>
+
+  <div class="profile" id="profile" aria-live="polite"></div>
+
+  <section aria-labelledby="h-fmt">
+    <div class="sec-head"><h2 id="h-fmt">Formatos</h2><span class="count" id="fmt-count"></span></div>
+    <div class="formats" id="formats"></div>
+  </section>
+
+  <section aria-labelledby="h-ser">
+    <div class="sec-head"><h2 id="h-ser">Series</h2><span class="count" id="ser-count"></span></div>
+    <div class="series" id="series"></div>
+  </section>
+
+  <footer>Los planes generados con Claude usan tu propia cuenta de Claude y te pedirán permiso la primera vez. Tus exploraciones guardadas se quedan solo en este navegador. Todas las historias se publican como ficción («Historia de ficción con fines de reflexión») y los consejos prácticos deben revisarse con fuentes oficiales antes de producir.</footer>
+</div>
+
+<script>
+const LIB = {
+  aud: ["Hispanos 50+ creyentes","Abuelos que cuidan a sus nietos","Jubilados latinos en EE. UU.","Migrantes latinos 50+","Viudas y viudos","Mujeres 50+ que empiezan de nuevo","Hombres 55+ del campo","Cuidadores de padres mayores","Diáspora centroamericana","Padres de adolescentes","Amantes de la historia latinoamericana","Personas 60+ que viven solas"],
+  nic: ["Parábolas y fe","Estafas contadas como historias","Dinero y jubilación","Bienestar emocional","Nostalgia de los 60–80","Historia de Latinoamérica","Leyendas y misterios del pueblo","Acertijos y curiosidades","Migración y raíces","Recetas con historia","Música de antes","Refranes y sabiduría popular","Naturaleza con lección de vida","Segundas oportunidades"],
+  fmt: ["Parábola en serie con narrador","Historia-acertijo con pausa","¿Y si…? con datos reales","Explicador del precio oculto","Misterio con mapas","Caso real con giro final","Quiz para jugar en familia","Mito o realidad","Historia de una marca o producto","Cuento largo para dormir","Película del domingo","Short con gancho"],
+  sty: ["Emotivo y tierno","Misterio y suspenso","Inspirador","Nostálgico","Humor suave","Reflexivo y espiritual"]
+};
+const OTHER_LABEL = { aud:"Otro público…", nic:"Otro nicho…", fmt:"Otro formato…", sty:"Otro estilo…" };
+
+const PRESETS = [
+ { id:"fe", name:"Fe y familia", hint:"Parábolas, perdón y valores", c:"var(--fe)", soft:"var(--fe-soft)", pill:"Principal",
+   profile:{ who:"Hispanos de 50+ creyentes, con hijos y nietos", want:"Historias que reconforten y den sentido", feel:"Ternura, esperanza, perdón", watch:"Televisor, de noche y en domingo" },
+   formats:[
+    {n:"Parábola moderna en serie", d:"12–15 min", p:"Historia de ficción del barrio de San Miguel, narrada por el abuelo Tomás, con moraleja final.", r:"Referencia: canales de historias narradas que conmueven"},
+    {n:"Relato bíblico con suspenso", d:"15–20 min", p:"Un pasaje conocido contado como historia, con un detalle que casi nadie nota.", r:"Referencia: canales de relatos bíblicos animados"},
+    {n:"Película del domingo", d:"40–60 min", p:"La serie completa unida en un solo vídeo para verla de principio a fin en el televisor.", r:"Referencia: maratones y recopilaciones largas"},
+    {n:"Historia para dormir", d:"30–60 min", p:"Relato lento con voz suave y música tranquila, para escuchar antes de dormir.", r:"Referencia: canales de cuentos para dormir para adultos"},
+    {n:"Short «Una frase del abuelo»", d:"30–45 s", p:"La moraleja de un capítulo, con enlace al vídeo largo.", r:"Referencia: Shorts de frases y reflexiones"}],
+   series:[
+    {t:"La familia de doña Carmen", tag:"Perdón · advertencia: «Mamá, cambié de número»", caps:["Su hijo no le escribió en 20 años… hasta que llegó un mensaje","La carta que Daniel nunca se atrevió a enviar","El día que el hijo volvió"], m:"El amor verdadero no tiene prisa por tu dinero."},
+    {t:"Lo que nadie nota de la Biblia", tag:"Fe · parábola pura", caps:["Lo que nadie nota de la parábola del hijo pródigo","Lo que nadie nota del buen samaritano","Lo que nadie nota de la viuda y sus dos monedas"], m:"El padre ya miraba el camino antes de que el hijo volviera."},
+    {t:"El jardinero", tag:"Gratitud · parábola pura", caps:["Nadie entendió por qué el abuelo le dejó su casa al jardinero","La noche de lluvia de 1974","Lo que Ramón hizo con la casa"], m:"Lo que siembras en silencio florece cuando ya no estás."},
+    {t:"Las promesas de mi madre", tag:"Memoria · parábola pura", caps:["La carta que su madre escribió antes de morir","La promesa que tardó 30 años en cumplirse","Lo que encontraron dentro de su vieja Biblia"], m:"Las palabras que guardamos pesan más que las que decimos."},
+    {t:"Hermanos que no se hablaban", tag:"Reconciliación · parábola pura", caps:["Dos hermanos, una herencia y 15 años de silencio","El funeral donde todo cambió","La mesa que volvió a juntarlos"], m:"Ninguna herencia vale más que un hermano."},
+    {t:"Milagros pequeños", tag:"Esperanza · parábola pura", caps:["El desconocido que pagó su medicina","La vecina a la que nadie visitaba","El niño que rezaba cada noche por su abuelo"], m:"A veces el milagro eres tú."},
+    {t:"Navidad en el barrio", tag:"Temporada · advertencia: paquete falso", caps:["El regalo de Navidad que nunca llegó","La silla vacía en Nochebuena","La Nochebuena en que todos dijeron la verdad"], m:"La prisa es la puerta del engaño."}]},
+ { id:"protectores", name:"Protectores de la familia", hint:"Estafas, dinero y nietos como historias", c:"var(--prot)", soft:"var(--prot-soft)", pill:"Base",
+   profile:{ who:"Abuelos y padres de 50+ preocupados por su dinero y sus nietos", want:"Aprender a protegerse sin miedo ni sermones", feel:"Tensión, alivio, orgullo de cuidar", watch:"Televisor y celular, compartido por WhatsApp" },
+   formats:[
+    {n:"Parábola con advertencia escondida", d:"12–15 min", p:"Historia emocional donde la trampa es el conflicto y la moraleja, la protección.", r:"Referencia: true crime narrado sin cara, en tono familiar"},
+    {n:"Historia-acertijo «¿Lo hubieras notado?»", d:"10–12 min", p:"Se pausa la historia para que el público adivine la señal de alarma antes de revelarla.", r:"Referencia: canales de quiz y misterios interactivos"},
+    {n:"Caso del barrio en tres actos", d:"12–15 min", p:"Planteamiento, engaño y giro, cerrando con «Lo que el abuelo te enseña»: 3 consejos.", r:"Referencia: explicadores con estructura de relato"},
+    {n:"Película del domingo", d:"40–60 min", p:"La serie completa en un vídeo, ideal para verla en familia.", r:"Referencia: maratones y recopilaciones largas"},
+    {n:"Short «¿Qué harías tú?»", d:"30–45 s", p:"El momento de la trampa sin resolver, con enlace al capítulo.", r:"Referencia: Shorts de dilema y decisión"}],
+   series:[
+    {t:"Voces engañosas", tag:"Advertencia: voz clonada con IA", caps:["Era la voz de su nieto… pero no era él","La llamada de las 3 de la mañana","La palabra secreta de la familia"], m:"Quien te ama puede esperar una pregunta."},
+    {t:"Amores de lejos", tag:"Advertencia: estafa romántica", caps:["El novio que nunca pudo venir","La amiga que sí vino","La segunda oportunidad de Lucía"], m:"El amor que siempre necesita dinero no es amor."},
+    {t:"Los nietos", tag:"Advertencia: desconocidos en internet", caps:["El amigo invisible de Mateo","El secreto que Mateo le contó a su abuelo","El día que Sofía pidió ayuda"], m:"El abuelo que pregunta con cariño protege más que el que prohíbe."},
+    {t:"El dinero de don Ernesto", tag:"Advertencia: pagos con tarjetas de regalo", caps:["El hombre que pagaba sus deudas con tarjetas de regalo","La vergüenza que casi le cuesta la casa","El día que don Ernesto habló"], m:"El engaño se alimenta del silencio."},
+    {t:"Los dos consejeros", tag:"Advertencia: falsos «notarios» de inmigración", caps:["Los dos consejeros del pueblo","El sello que no valía nada","El consejo que salvó a una familia"], m:"No todo el que lleva sello tiene la verdad."},
+    {t:"Mensajes de diciembre", tag:"Advertencia: estafas de temporada", caps:["El paquete que nunca llegó","El premio que nadie ganó","La colecta que no existía"], m:"Lo urgente casi nunca es verdad."},
+    {t:"El banco que llamaba de noche", tag:"Advertencia: falso banco y «reembolsos»", caps:["La llamada del banco que no era el banco","El reembolso que vació su cuenta","La cajera que se dio cuenta"], m:"Cuelga y llama tú: así se rompe el engaño."}]},
+ { id:"sabiduria", name:"Sabiduría para la segunda mitad", hint:"Propósito, nostalgia y nuevas oportunidades", c:"var(--sab)", soft:"var(--sab-soft)", pill:"Base",
+   profile:{ who:"Adultos de 55+ jubilados o a punto de jubilarse, muchos lejos de su tierra", want:"Sentir que su vida y su experiencia todavía importan", feel:"Nostalgia, inspiración, compañía", watch:"Televisor por la tarde, en sesiones largas" },
+   formats:[
+    {n:"Historia de vida con giro", d:"12–15 min", p:"Alguien que empieza de nuevo después de los 60, contado con un final inesperado.", r:"Referencia: canales de historias inspiradoras narradas"},
+    {n:"Nostalgia narrada", d:"15–20 min", p:"Cómo era la vida antes: juegos, radio, cartas, el mercado del pueblo.", r:"Referencia: canales de nostalgia de décadas pasadas"},
+    {n:"Carta al yo de 20 años", d:"8–10 min", p:"Lecciones de vida en forma de carta, leída por el narrador.", r:"Referencia: vídeos de consejos de personas mayores"},
+    {n:"Cuento largo para la tarde", d:"30–60 min", p:"Relato tranquilo para escuchar acompañado, sin prisa.", r:"Referencia: audiolibros y cuentos narrados en YouTube"},
+    {n:"Short «Lección de 30 segundos»", d:"30–45 s", p:"Una frase o un recuerdo que invita a ver el vídeo completo.", r:"Referencia: Shorts de sabiduría y frases"}],
+   series:[
+    {t:"Nunca es tarde", tag:"Inspiración", caps:["Aprendió a leer a los 72… y escribió una carta que hizo llorar a todos","La abuela que abrió su negocio a los 65","El jubilado que volvió a la escuela"], m:"La edad no cierra puertas; el miedo sí."},
+    {t:"Cuando éramos niños", tag:"Nostalgia", caps:["Lo que hacíamos los domingos antes de los celulares","La radio que unía a todo el barrio","Las cartas que tardaban un mes en llegar"], m:"Lo sencillo también era felicidad."},
+    {t:"La historia del abuelo Tomás", tag:"Revelación del narrador", caps:["La esquina donde el abuelo esperaba","El hermano que se fue","Por qué el abuelo cuenta historias"], m:"Contar una historia es no dejar que se pierda."},
+    {t:"Segundas oportunidades", tag:"Amor y amistad", caps:["El viudo que volvió a bailar","La amistad que empezó en una sala de espera","Su primer día de jubilado"], m:"El corazón no se jubila."},
+    {t:"Raíces", tag:"Migración y memoria", caps:["El pueblo que se quedó sin jóvenes","La receta que viajó en una maleta","Volver al pueblo después de 40 años"], m:"Uno se va del pueblo, pero el pueblo no se va de uno."},
+    {t:"Cartas al yo de 20 años", tag:"Lecciones de vida", caps:["Lo que le diría a mi yo de 20 años sobre el dinero","Lo que le diría a mi yo de 20 años sobre el amor","Lo que le diría a mi yo de 20 años sobre el perdón"], m:"Si pudieras volver, ¿qué harías distinto?"},
+    {t:"La soledad tiene remedio", tag:"Compañía", caps:["El banco del parque","El perro que adoptó a un abuelo","La mesa de los martes"], m:"Nadie está tan solo como para no poder dar compañía."}]}
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const STORE = "mapa50.saved.v1";
+function loadSaved(){ try { const v = JSON.parse(localStorage.getItem(STORE) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; } }
+function persist(){ try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch {} }
+let saved = loadSaved();
+let draft = null;           // plan generado y aún no guardado
+let current = "fe";
+
+/* ---------- selector de combinación ---------- */
+const MAX = 3;
+const GROUPS = ["aud","nic","fmt","sty"];
+const GLABEL = { aud:"Público", nic:"Nicho", fmt:"Formato", sty:"Estilo" };
+const custom = { aud:[], nic:[], fmt:[], sty:[] };      // opciones escritas por la persona o traídas por el asistente
+const pick = { aud:[LIB.aud[0], LIB.aud[1]], nic:[LIB.nic[0], LIB.nic[1]], fmt:[LIB.fmt[0]], sty:[LIB.sty[0]] };
+const joinV = v => Array.isArray(v) ? v.join(" + ") : String(v ?? "");
+const comboText = c => GROUPS.map(g => joinV(c[g])).join(" · ");
+
+function chipsHtml(g){
+  const opts = [...LIB[g], ...custom[g]];
+  return opts.map(v => `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="${pick[g].includes(v)}">${esc(v)}${custom[g].includes(v) ? '<span class="x" aria-hidden="true">✎</span>' : ""}</button>`).join("")
+    + `<input class="other" id="other-${g}" type="text" maxlength="80" placeholder="${OTHER_LABEL[g]}" aria-label="${OTHER_LABEL[g]} (pulsa Enter para añadirlo)">`;
+}
+function addOption(g, v){
+  v = String(v || "").trim().slice(0, 80); if (!v) return;
+  if (!LIB[g].includes(v) && !custom[g].includes(v)) custom[g].push(v);
+  if (!pick[g].includes(v)) { pick[g].push(v); if (pick[g].length > MAX) pick[g].shift(); }
+}
+function buildChips(){
+  document.querySelectorAll(".chips").forEach(box => {
+    const g = box.dataset.group;
+    box.innerHTML = chipsHtml(g);
+    if (box.dataset.wired) return; box.dataset.wired = "1";
+    box.addEventListener("click", e => {
+      const b = e.target.closest(".chip"); if (!b) return;
+      const v = b.dataset.v, i = pick[g].indexOf(v);
+      if (i >= 0) { if (pick[g].length > 1) pick[g].splice(i, 1); else setStatus("Deja al menos una opción en «" + GLABEL[g] + "».", true); }
+      else if (pick[g].length >= MAX) setStatus("Máximo " + MAX + " opciones en «" + GLABEL[g] + "». Quita una para añadir otra.", true);
+      else pick[g].push(v);
+      syncChips();
+    });
+    box.addEventListener("keydown", e => {
+      if (e.key !== "Enter" || !e.target.classList.contains("other")) return;
+      e.preventDefault(); addOption(g, e.target.value); buildChips(); syncChips(); $("other-" + g).focus();
+    });
+  });
+  syncChips();
+}
+function syncChips(){
+  document.querySelectorAll(".chips").forEach(box => {
+    const g = box.dataset.group;
+    box.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", pick[g].includes(c.dataset.v) ? "true" : "false"));
+  });
+  $("combo").innerHTML = `<strong>Tu combinación:</strong> ${esc(comboText(pick))}`;
+}
+function applyCombo(c){
+  for (const g of GROUPS) {
+    const vals = (Array.isArray(c[g]) ? c[g] : [c[g]]).map(v => String(v || "").trim()).filter(Boolean).slice(0, MAX);
+    if (!vals.length) continue;
+    pick[g] = [];
+    vals.forEach(v => addOption(g, v));
+  }
+  buildChips();
+}
+const sampleN = (arr, n) => [...arr].sort(() => Math.random() - .5).slice(0, n);
+$("surprise").addEventListener("click", () => {
+  applyCombo({ aud:sampleN(LIB.aud, 2), nic:sampleN(LIB.nic, 2), fmt:sampleN(LIB.fmt, 1 + (Math.random() < .5)), sty:sampleN(LIB.sty, 1) });
+  setStatus("Combinación al azar lista. Genera el plan o pide sugerencias al asistente.");
+});
+
+/* ---------- asistente de sugerencias ---------- */
+const STARTER = [
+  { name:"Abuelos protectores en Navidad", aud:["Abuelos que cuidan a sus nietos","Migrantes latinos 50+"], nic:["Estafas contadas como historias","Parábolas y fe"], fmt:["Parábola en serie con narrador"], sty:["Emotivo y tierno"], why:"Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas.", ex:"El regalo de Navidad que nunca llegó" },
+  { name:"Misterios del pueblo con acertijo", aud:["Diáspora centroamericana","Amantes de la historia latinoamericana"], nic:["Leyendas y misterios del pueblo","Migración y raíces"], fmt:["Historia-acertijo con pausa","Misterio con mapas"], sty:["Misterio y suspenso"], why:"La nostalgia del pueblo más un enigma que el público intenta resolver retiene hasta el final.", ex:"Nadie volvió a abrir la casa del cerro… hasta 1987" },
+  { name:"Viudos que vuelven a empezar", aud:["Viudas y viudos","Personas 60+ que viven solas"], nic:["Segundas oportunidades","Bienestar emocional"], fmt:["Caso real con giro final","Cuento largo para dormir"], sty:["Inspirador","Nostálgico"], why:"Un público que busca compañía y esperanza, con poca oferta cuidada en español.", ex:"El viudo que volvió a bailar en la boda de su nieta" }
+];
+function renderSugs(list, origin){
+  $("sugs").innerHTML = list.map((s, i) => `
+    <article class="sug">
+      <h4>${esc(s.name || "Sugerencia " + (i + 1))}</h4>
+      <dl>${GROUPS.map(g => `<dt>${GLABEL[g]}</dt><dd>${esc(joinV(s[g]))}</dd>`).join("")}</dl>
+      ${s.why ? `<p class="why">${esc(s.why)}</p>` : ""}
+      ${s.ex ? `<p class="ex">Título de ejemplo: «${esc(s.ex)}»</p>` : ""}
+      <div class="row">
+        <button class="btn" type="button" data-use="${i}">Usar esta combinación</button>
+        <button class="btn primary" type="button" data-gen="${i}">Usar y generar plan</button>
+      </div>
+    </article>`).join("");
+  $("sugs").dataset.origin = origin;
+  sugList = list;
+}
+let sugList = [];
+$("sugs").addEventListener("click", e => {
+  const u = e.target.closest("[data-use]"), g = e.target.closest("[data-gen]");
+  const i = Number((u || g)?.dataset.use ?? (u || g)?.dataset.gen);
+  if (!(u || g) || !sugList[i]) return;
+  applyCombo(sugList[i]);
+  setAsis("Combinación aplicada: " + (sugList[i].name || ""));
+  if (g && !$("gen").disabled) $("gen").click();
+});
+function setAsis(t, err){ const s = $("asis-status"); s.textContent = t; s.classList.toggle("err", !!err); }
+function sugPrompt(q){
+  return `Eres un asistente que sugiere combinaciones para canales de YouTube automatizados en español, pensados para verse en Smart TV, con historias evergreen de curiosidad y emoción (ganchos, bucles abiertos, moralejas).
+Opciones disponibles (puedes proponer otras nuevas si encajan mejor):
+- Públicos: ${LIB.aud.join("; ")}
+- Nichos: ${LIB.nic.join("; ")}
+- Formatos: ${LIB.fmt.join("; ")}
+- Estilos: ${LIB.sty.join("; ")}
+Selección actual de la persona: ${comboText(pick)}
+Lo que busca: ${q || "(no lo dijo; parte de su selección actual y propón variaciones que la mejoren)"}
+
+Propón 3 combinaciones distintas entre sí. Cada una combina 2 públicos, 2 nichos, 1 o 2 formatos y 1 o 2 estilos que se potencian entre sí. Sin política partidista ni consejos médicos.
+Responde SOLO con un array JSON de 3 objetos con esta forma:
+[{"name": "nombre corto (2-5 palabras)", "aud": ["...","..."], "nic": ["...","..."], "fmt": ["..."], "sty": ["..."], "why": "por qué funciona, en una frase", "ex": "un título de capítulo de ejemplo"}]`;
+}
+let sugCtl = null;
+$("asis-go").addEventListener("click", async () => {
+  if (!sample) { setAsis("El asistente no está disponible en esta vista; prueba las sugerencias de abajo.", true); return; }
+  sugCtl?.abort(); sugCtl = new AbortController();
+  $("asis-go").disabled = true; setAsis("Pensando sugerencias…");
+  try {
+    const raw = await sample.json(sugPrompt($("asis-q").value.trim()), { signal: sugCtl.signal, cache: false });
+    const list = (Array.isArray(raw) ? raw : raw?.sugerencias || []).slice(0, 3).filter(s => s && typeof s === "object" && s.aud && s.nic);
+    if (!list.length) throw { code:"invalid_json" };
+    renderSugs(list, "claude"); setAsis("Tres sugerencias nuevas. Elige una o pide otras.");
+  } catch (e) {
+    if (e?.code !== "cancelled") setAsis(ERR[e?.code] || "No se pudieron generar sugerencias. Inténtalo de nuevo.", true);
+  } finally { $("asis-go").disabled = false; }
+});
+$("asis-q").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("asis-go").click(); } });
+
+/* ---------- generación con Claude ---------- */
+let sample = null, ctl = null;
+(async () => {
+  try { sample = await window.claude?.use?.("sample"); } catch { sample = null; }
+  if (!sample) { $("gen").disabled = true; setStatus("La generación con Claude no está disponible en esta vista. Puedes explorar los planes base.", true); }
+})();
+function setStatus(t, err){ const s = $("status"); s.textContent = t; s.classList.toggle("err", !!err); }
+
+function promptFor(p){
+  return `Eres estratega de canales de YouTube automatizados (sin mostrar la cara) en español latino neutro, para verse en Smart TV.
+Diseña UN plan que fusione todas estas opciones en un solo canal coherente (no un plan por opción):
+- Públicos: ${joinV(p.aud)}
+- Nichos o temas: ${joinV(p.nic)}
+- Formatos de referencia (inspirados en formatos que funcionan en otros nichos): ${joinV(p.fmt)}
+- Estilos emocionales: ${joinV(p.sty)}
+
+Reglas:
+- Cuando haya varias opciones en una fila, el perfil y las series deben cruzarlas (por ejemplo, una serie que une los dos nichos para los dos públicos).
+- Contenido evergreen, con historias que apelen a la curiosidad y la emoción (ganchos, bucles abiertos, giros, moralejas).
+- Las historias son de ficción declarada; nada de consejos médicos, legales o financieros personalizados; sin política partidista.
+- Si el tema toca a menores, sin detalles que puedan imitarse.
+- Títulos de capítulo de máximo ~70 caracteres, que abran una pregunta o un misterio; cada serie conecta sus capítulos con un bucle.
+
+Responde SOLO con un objeto JSON con esta forma exacta:
+{"name": "nombre corto del plan (2-5 palabras)",
+ "hint": "una línea que lo resume",
+ "profile": {"who": "quiénes son", "want": "qué buscan", "feel": "qué sienten al ver", "watch": "cómo y cuándo ven YouTube"},
+ "formats": [5 objetos {"n": "nombre del formato", "d": "duración, ej. 12–15 min", "p": "qué es en una frase", "r": "Referencia: tipo de canal o formato de otro nicho en que se inspira"}],
+ "series": [7 objetos {"t": "nombre de la serie", "tag": "tema o advertencia escondida en pocas palabras", "caps": ["título cap. 1", "título cap. 2", "título cap. 3"], "m": "moraleja en una frase"}]}`;
+}
+function normalize(x){
+  if (!x || typeof x !== "object") throw new Error("shape");
+  const s = v => String(v ?? "").trim();
+  const formats = (Array.isArray(x.formats) ? x.formats : []).slice(0, 5).map(f => ({ n:s(f?.n), d:s(f?.d), p:s(f?.p), r:s(f?.r) })).filter(f => f.n);
+  const series = (Array.isArray(x.series) ? x.series : []).slice(0, 7).map(z => ({ t:s(z?.t), tag:s(z?.tag), m:s(z?.m),
+    caps:(Array.isArray(z?.caps) ? z.caps : []).map(s).filter(Boolean).slice(0, 5) })).filter(z => z.t && z.caps.length);
+  if (!formats.length || !series.length) throw new Error("shape");
+  const pr = x.profile || {};
+  return { name: s(x.name) || "Exploración", hint: s(x.hint), profile:{ who:s(pr.who), want:s(pr.want), feel:s(pr.feel), watch:s(pr.watch) }, formats, series };
+}
+const ERR = {
+  not_granted:"No se dio permiso para usar Claude en esta página.",
+  sampling_disabled:"Claude no está disponible para esta cuenta.",
+  rate_limited:"Demasiadas peticiones seguidas. Espera un momento y vuelve a intentarlo.",
+  session_expired:"Tu sesión caducó. Vuelve a iniciar sesión y prueba de nuevo.",
+  invalid_json:"La respuesta no vino en el formato esperado. Pulsa «Generar» otra vez.",
+  refused:"Claude no quiso generar esta combinación. Prueba con otra.",
+  empty_completion:"No llegó respuesta. Prueba con otra combinación."
+};
+let lastCombo = "", blocked = false;
+$("gen").addEventListener("click", async () => {
+  if (!sample) return;
+  const combo = JSON.stringify(pick);
+  const fresh = combo === lastCombo;           // misma combinación → pedir otra versión
+  lastCombo = combo;
+  ctl = new AbortController();
+  $("gen").disabled = true; $("stop").hidden = false;
+  setStatus("Pensando el plan… puede tardar hasta un minuto.");
+  try {
+    const raw = await sample.json(promptFor(pick), { signal: ctl.signal, cache: fresh ? false : true });
+    const plan = normalize(raw);
+    draft = { id: "x" + Date.now().toString(36), c:"var(--exp)", soft:"var(--exp-soft)", pill:"Nuevo",
+      combo:{ aud:[...pick.aud], nic:[...pick.nic], fmt:[...pick.fmt], sty:[...pick.sty] }, ...plan };
+    setStatus("Listo. Si te gusta, guárdalo en tus exploraciones.");
+    current = draft.id; renderTabs(); show();
+    $("plan-title").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start" });
+  } catch (e) {
+    if (e?.code === "cancelled") setStatus("Generación detenida.");
+    else if (e?.message === "shape") setStatus("La respuesta llegó incompleta. Pulsa «Generar» otra vez.", true);
+    else {
+      setStatus(ERR[e?.code] || "Algo falló al generar. Inténtalo de nuevo en un momento.", true);
+      if (e?.code === "not_granted" || e?.code === "sampling_disabled") blocked = true;
+    }
+  } finally {
+    $("gen").disabled = blocked;
+    $("stop").hidden = true;
+  }
+});
+$("stop").addEventListener("click", () => ctl?.abort());
+
+/* ---------- planes y pestañas ---------- */
+function all(){ return [...PRESETS, ...saved, ...(draft && !saved.some(s => s.id === draft.id) ? [draft] : [])]; }
+function renderTabs(){
+  $("tabs").innerHTML = all().map(a =>
+    `<button class="tab" role="tab" data-id="${esc(a.id)}" style="--c:${a.c};--soft:${a.soft}" aria-selected="${a.id === current}">
+      <span class="who">${esc(a.name)}</span><span class="hint">${esc(a.hint || "")}</span>
+      <span class="pill">${esc(saved.some(s => s.id === a.id) ? "Guardado" : (a.pill || ""))}</span></button>`).join("");
+}
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  current = b.dataset.id;
+  if (/^[a-z0-9-]+$/i.test(current) && location.hash !== "#" + current) location.hash = current;
+  renderTabs(); show();
+});
+window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (all().some(a => a.id === h)) { current = h; renderTabs(); show(); } });
+
+function show(){
+  const a = all().find(x => x.id === current) || PRESETS[0];
+  current = a.id;
+  document.body.style.setProperty("--c", a.c); document.body.style.setProperty("--soft", a.soft);
+  const isPreset = PRESETS.some(p => p.id === a.id), isSaved = saved.some(s => s.id === a.id);
+  $("plan-title").textContent = a.name;
+  $("save").hidden = isPreset || isSaved; $("remove").hidden = !isSaved;
+  $("copybox").hidden = true; $("copybox").innerHTML = "";
+  const p = a.profile || {};
+  $("profile").innerHTML =
+    `<div><b>Quiénes son</b><span>${esc(p.who)}</span></div><div><b>Qué buscan</b><span>${esc(p.want)}</span></div>
+     <div><b>Qué sienten</b><span>${esc(p.feel)}</span></div><div><b>Cómo ven</b><span>${esc(p.watch)}</span></div>`
+     + (a.combo ? `<div style="grid-column:1/-1"><b>Combinación explorada</b><span>${esc(comboText(a.combo))}</span></div>` : "");
+  $("fmt-count").textContent = `${a.formats.length} formatos`;
+  $("formats").innerHTML = a.formats.map(f =>
+    `<article class="fmt"><span class="dur">${esc(f.d)}</span><h3>${esc(f.n)}</h3><p>${esc(f.p)}</p><span class="ref">${esc(f.r)}</span></article>`).join("");
+  const total = a.series.reduce((s, x) => s + x.caps.length, 0);
+  $("ser-count").textContent = `${a.series.length} series · ${total} capítulos`;
+  $("series").innerHTML = a.series.map((s, i) =>
+    `<article class="ser"><div class="ser-top"><h3>${esc(s.t)}</h3><span class="num">Serie ${i + 1}</span></div>
+      <span class="tag">${esc(s.tag)}</span>
+      <ol class="caps">${s.caps.map(c => `<li>${esc(c)}</li>`).join("")}</ol>
+      <p class="moral">Moraleja: ${esc(s.m)}</p></article>`).join("");
+}
+$("save").addEventListener("click", () => {
+  const a = all().find(x => x.id === current); if (!a || saved.some(s => s.id === a.id)) return;
+  saved.push(a); persist(); renderTabs(); show(); setStatus("Guardado en este navegador.");
+});
+$("remove").addEventListener("click", () => {
+  saved = saved.filter(s => s.id !== current); persist(); if (draft?.id === current) draft = null;
+  current = "fe"; renderTabs(); show(); setStatus("Quitado de tus exploraciones.");
+});
+function asText(a){
+  const p = a.profile || {};
+  return [`${a.name}`, a.combo ? `Combinación: ${comboText(a.combo)}` : "",
+    `Público: ${p.who}`, `Buscan: ${p.want}`, `Sienten: ${p.feel}`, `Ven: ${p.watch}`, "", "FORMATOS",
+    ...a.formats.map((f, i) => `${i + 1}. ${f.n} (${f.d}): ${f.p} ${f.r}`), "", "SERIES",
+    ...a.series.flatMap((s, i) => [`${i + 1}. ${s.t} — ${s.tag}`, ...s.caps.map((c, j) => `   Cap. ${j + 1}: ${c}`), `   Moraleja: ${s.m}`])
+  ].filter(l => l !== undefined).join("\n");
+}
+$("copy").addEventListener("click", () => {
+  const a = all().find(x => x.id === current); if (!a) return;
+  const txt = asText(a);
+  const fallback = () => {
+    $("copybox").hidden = false;
+    $("copybox").innerHTML = `<textarea class="copyfallback" id="copyarea" aria-label="Plan en texto">${esc(txt)}</textarea>`;
+    const t = $("copyarea"); t.focus(); t.select(); setStatus("Selecciona el texto y cópialo.");
+  };
+  try { navigator.clipboard.writeText(txt).then(() => setStatus("Plan copiado."), fallback); } catch { fallback(); }
+});
+
+buildChips();
+renderSugs(STARTER, "starter");
+setAsis("Tres ideas para empezar. Pide más con o sin descripción.");
+const h0 = location.hash.slice(1); if (all().some(a => a.id === h0)) current = h0;
+renderTabs(); show();
+</script>
