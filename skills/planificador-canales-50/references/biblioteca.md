@@ -57,10 +57,10 @@ Punto de partida para sugerir y combinar. No es una lista cerrada: si lo que des
 - Reflexivo y espiritual
 
 ## Combinaciones de partida
-Son ejemplos del formato de una buena sugerencia, no respuestas listas. Úsalas solo si la investigación y los filtros las eligen para esa persona concreta, y en ese caso adáptalas a su contexto.
+Son ejemplos del formato de una buena sugerencia, no respuestas listas. Fíjate en que solo una fila (el público) lleva 2 opciones: así el canal mantiene una identidad clara. Úsalas solo si la investigación y los filtros las eligen para esa persona concreta, y en ese caso adáptalas a su contexto.
 
 | Nombre | Públicos | Nichos | Formatos | Estilo | Por qué funciona | Título de ejemplo |
 |---|---|---|---|---|---|---|
-| Abuelos protectores en Navidad | Abuelos que cuidan a sus nietos + Migrantes latinos 50+ | Estafas contadas como historias + Parábolas y fe | Parábola en serie con narrador | Emotivo y tierno | Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas | El regalo de Navidad que nunca llegó |
-| Misterios del pueblo con acertijo | Diáspora centroamericana + Amantes de la historia latinoamericana | Leyendas y misterios del pueblo + Migración y raíces | Historia-acertijo con pausa + Misterio con mapas | Misterio y suspenso | La nostalgia del pueblo y un enigma que el público intenta resolver retienen hasta el final | Nadie volvió a abrir la casa del cerro… hasta 1987 |
-| Viudos que vuelven a empezar | Viudas y viudos + Personas 60+ que viven solas | Segundas oportunidades + Bienestar emocional | Caso real con giro final + Cuento largo para dormir | Inspirador + Nostálgico | Un público que busca compañía y esperanza, con poca oferta cuidada en español | El viudo que volvió a bailar en la boda de su nieta |
+| Abuelos protectores en Navidad | Abuelos que cuidan a sus nietos + Migrantes latinos 50+ | Estafas contadas como historias | Parábola en serie con narrador | Emotivo y tierno | Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas | El regalo de Navidad que nunca llegó |
+| Misterios del pueblo con acertijo | Diáspora centroamericana + Amantes de la historia latinoamericana | Leyendas y misterios del pueblo | Historia-acertijo con pausa | Misterio y suspenso | La nostalgia del pueblo y un enigma que el público intenta resolver retienen hasta el final | Nadie volvió a abrir la casa del cerro… hasta 1987 |
+| Viudos que vuelven a empezar | Viudas y viudos + Personas 60+ que viven solas | Segundas oportunidades | Cuento largo para dormir | Inspirador | Un público que busca compañía y esperanza, con poca oferta cuidada en español | El viudo que volvió a bailar en la boda de su nieta |

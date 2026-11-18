@@ -116,7 +116,7 @@ footer{color:var(--muted);font-size:13px;max-width:78ch}
   </header>
 
   <div class="explorer" id="explorer">
-    <h2>Explorar otra combinación <small>Combina hasta 3 opciones por fila; escribe la tuya y pulsa Enter</small></h2>
+    <h2>Explorar otra combinación <small>Combina hasta 2 opciones por fila (mejor solo en una fila); escribe la tuya y pulsa Enter</small></h2>
     <div class="assistant" aria-labelledby="h-asis">
       <div class="asis-head">
         <h3 id="h-asis">Asistente de sugerencias</h3>
@@ -239,11 +239,11 @@ let draft = null;           // plan generado y aún no guardado
 let current = "fe";
 
 /* ---------- selector de combinación ---------- */
-const MAX = 3;
+const MAX = 2;
 const GROUPS = ["aud","nic","fmt","sty"];
 const GLABEL = { aud:"Público", nic:"Nicho", fmt:"Formato", sty:"Estilo" };
 const custom = { aud:[], nic:[], fmt:[], sty:[] };      // opciones escritas por la persona o traídas por el asistente
-const pick = { aud:[LIB.aud[0], LIB.aud[1]], nic:[LIB.nic[0], LIB.nic[1]], fmt:[LIB.fmt[0]], sty:[LIB.sty[0]] };
+const pick = { aud:[LIB.aud[0], LIB.aud[1]], nic:[LIB.nic[0]], fmt:[LIB.fmt[0]], sty:[LIB.sty[0]] };
 const joinV = v => Array.isArray(v) ? v.join(" + ") : String(v ?? "");
 const comboText = c => GROUPS.map(g => joinV(c[g])).join(" · ");
 
@@ -295,15 +295,16 @@ function applyCombo(c){
 }
 const sampleN = (arr, n) => [...arr].sort(() => Math.random() - .5).slice(0, n);
 $("surprise").addEventListener("click", () => {
-  applyCombo({ aud:sampleN(LIB.aud, 2), nic:sampleN(LIB.nic, 2), fmt:sampleN(LIB.fmt, 1 + (Math.random() < .5)), sty:sampleN(LIB.sty, 1) });
+  const two = GROUPS[Math.floor(Math.random() * 3)];   // solo una fila (público, nicho o formato) lleva 2 opciones
+  applyCombo(Object.fromEntries(GROUPS.map(g => [g, sampleN(LIB[g], g === two ? 2 : 1)])));
   setStatus("Combinación al azar lista. Genera el plan o pide sugerencias al asistente.");
 });
 
 /* ---------- asistente de sugerencias ---------- */
 const STARTER = [
-  { name:"Abuelos protectores en Navidad", aud:["Abuelos que cuidan a sus nietos","Migrantes latinos 50+"], nic:["Estafas contadas como historias","Parábolas y fe"], fmt:["Parábola en serie con narrador"], sty:["Emotivo y tierno"], why:"Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas.", ex:"El regalo de Navidad que nunca llegó" },
-  { name:"Misterios del pueblo con acertijo", aud:["Diáspora centroamericana","Amantes de la historia latinoamericana"], nic:["Leyendas y misterios del pueblo","Migración y raíces"], fmt:["Historia-acertijo con pausa","Misterio con mapas"], sty:["Misterio y suspenso"], why:"La nostalgia del pueblo más un enigma que el público intenta resolver retiene hasta el final.", ex:"Nadie volvió a abrir la casa del cerro… hasta 1987" },
-  { name:"Viudos que vuelven a empezar", aud:["Viudas y viudos","Personas 60+ que viven solas"], nic:["Segundas oportunidades","Bienestar emocional"], fmt:["Caso real con giro final","Cuento largo para dormir"], sty:["Inspirador","Nostálgico"], why:"Un público que busca compañía y esperanza, con poca oferta cuidada en español.", ex:"El viudo que volvió a bailar en la boda de su nieta" }
+  { name:"Abuelos protectores en Navidad", aud:["Abuelos que cuidan a sus nietos","Migrantes latinos 50+"], nic:["Estafas contadas como historias"], fmt:["Parábola en serie con narrador"], sty:["Emotivo y tierno"], why:"Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas.", ex:"El regalo de Navidad que nunca llegó" },
+  { name:"Misterios del pueblo con acertijo", aud:["Diáspora centroamericana","Amantes de la historia latinoamericana"], nic:["Leyendas y misterios del pueblo"], fmt:["Historia-acertijo con pausa"], sty:["Misterio y suspenso"], why:"La nostalgia del pueblo más un enigma que el público intenta resolver retiene hasta el final.", ex:"Nadie volvió a abrir la casa del cerro… hasta 1987" },
+  { name:"Viudos que vuelven a empezar", aud:["Viudas y viudos","Personas 60+ que viven solas"], nic:["Segundas oportunidades"], fmt:["Cuento largo para dormir"], sty:["Inspirador"], why:"Un público que busca compañía y esperanza, con poca oferta cuidada en español.", ex:"El viudo que volvió a bailar en la boda de su nieta" }
 ];
 function renderSugs(list, origin){
   $("sugs").innerHTML = list.map((s, i) => `
@@ -340,9 +341,9 @@ Opciones disponibles (puedes proponer otras nuevas si encajan mejor):
 Selección actual de la persona: ${comboText(pick)}
 Lo que busca: ${q || "(no lo dijo; parte de su selección actual y propón variaciones que la mejoren)"}
 
-Propón 3 combinaciones distintas entre sí. Cada una combina 2 públicos, 2 nichos, 1 o 2 formatos y 1 o 2 estilos que se potencian entre sí. Sin política partidista ni consejos médicos.
+Propón 3 combinaciones distintas entre sí. Cada una lleva como máximo 2 opciones por fila (público, nicho, formato, estilo) y, a ser posible, solo una fila con 2, para que el canal tenga una identidad clara. Sin política partidista ni consejos médicos.
 Responde SOLO con un array JSON de 3 objetos con esta forma:
-[{"name": "nombre corto (2-5 palabras)", "aud": ["...","..."], "nic": ["...","..."], "fmt": ["..."], "sty": ["..."], "why": "por qué funciona, en una frase", "ex": "un título de capítulo de ejemplo"}]`;
+[{"name": "nombre corto (2-5 palabras)", "aud": ["..."], "nic": ["..."], "fmt": ["..."], "sty": ["..."]  (una de las cuatro listas puede llevar 2 elementos), "why": "por qué funciona, en una frase", "ex": "un título de capítulo de ejemplo"}]`;
 }
 let sugCtl = null;
 $("asis-go").addEventListener("click", async () => {
@@ -377,7 +378,7 @@ Diseña UN plan que fusione todas estas opciones en un solo canal coherente (no 
 - Estilos emocionales: ${joinV(p.sty)}
 
 Reglas:
-- Cuando haya varias opciones en una fila, el perfil y las series deben cruzarlas (por ejemplo, una serie que une los dos nichos para los dos públicos).
+- Cuando haya dos opciones en una fila, el perfil y las series deben cruzarlas (por ejemplo, una serie que une los dos nichos para los dos públicos).
 - Contenido evergreen, con historias que apelen a la curiosidad y la emoción (ganchos, bucles abiertos, giros, moralejas).
 - Las historias son de ficción declarada; nada de consejos médicos, legales o financieros personalizados; sin política partidista.
 - Si el tema toca a menores, sin detalles que puedan imitarse.
