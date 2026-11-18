@@ -18,16 +18,20 @@ Convierte una idea vaga ("quiero un canal para abuelos") en un plan de canal lis
 ### 1. Entender qué busca la persona
 Si la petición es vaga, no hagas un interrogatorio: propón directamente. Usa lo que ya sepas (temas que le interesan, país, si quiere monetizar pronto, qué le parece delicado). Pregunta solo lo que cambie el plan de verdad, como mucho una o dos cosas.
 
-### 2. Asistente de sugerencias (cuando no hay combinación clara)
-Propón **3 combinaciones distintas**. Cada una combina:
-- 2 públicos, 2 nichos, 1–2 formatos de referencia y 1–2 estilos emocionales que se potencien entre sí.
-- Una frase de por qué funciona.
-- Un título de capítulo de ejemplo que ya muestre el gancho.
+### 2. Investigar y filtrar (siempre, antes de sugerir o planificar)
+Lee `references/investigacion-y-filtros.md` y recorre su embudo. Es lo que separa un plan útil de uno genérico:
+1. Contexto de la persona (lo que sabes y lo que asumes).
+2. Al menos 8 candidatas, cada una con una persona y un dolor o deseo concreto, incluidas ideas que no están en la biblioteca.
+3. Investigación de la demanda con las herramientas que tengas (búsqueda web, Google Trends, YouTube, vidIQ, NotebookLM), citando fuentes y marcando lo que no pudiste verificar. Nunca inventes cifras ni canales.
+4. Filtros: persona y dolor concreto, evidencia de demanda, formato ganador de referencia, ángulo diferenciado, encaje con Smart TV, evergreen, emoción y curiosidad, riesgo, monetización y facilidad de producir.
+5. Puntuación y 3 finalistas distintas entre sí.
 
-Toma las opciones de `references/biblioteca.md`, o inventa otras si encajan mejor con lo que la persona describió. Deja que elija una, que mezcle dos, o que cambie piezas.
+Muestra ese recorrido a la persona de forma compacta (candidatas, hallazgos, tabla de filtros, finalistas). Si ya trae una combinación cerrada, haz una revisión rápida de esa combinación con los mismos filtros y la investigación que la respalde, y sigue.
 
-### 3. Combinar
-Acepta hasta 3 opciones por fila (público, nicho, formato, estilo). **Fusiona todo en un solo canal coherente**: el perfil y las series deben cruzar las opciones (por ejemplo, una serie que une los dos nichos para los dos públicos), nunca un plan separado por opción.
+### 3. Sugerir y combinar
+- **Asistente de sugerencias:** las 3 finalistas son las sugerencias. Cada una combina 2 públicos, 2 nichos, 1–2 formatos y 1–2 estilos que se potencien, con su evidencia, su porqué, su riesgo y un título de ejemplo propio. Deja que la persona elija una, mezcle dos o cambie piezas.
+- **Combinar:** acepta hasta 3 opciones por fila (público, nicho, formato, estilo). **Fusiona todo en un solo canal coherente**: el perfil y las series cruzan las opciones (por ejemplo, una serie que une los dos nichos para los dos públicos), nunca un plan separado por opción.
+- `references/biblioteca.md` es materia prima. Sus combinaciones de partida y los planes de `references/ejemplos.md` muestran el nivel de calidad: no los repitas tal cual, ni sus personajes, nombres, lugares o títulos. Cada plan tiene su propio narrador, universo y títulos nacidos del contexto de la persona.
 
 ### 4. Entregar el plan
 Usa siempre esta estructura, porque es la que la persona ya conoce y la que alimenta el resto del trabajo:
@@ -53,11 +57,17 @@ Combinación: [públicos] · [nichos] · [formatos] · [estilos]
 Moraleja: [una frase que se recuerde como un refrán]
 (… hasta la serie 7)
 
+## Por qué este plan
+[La evidencia que lo respalda (con fuente o marcada como estimación), su puntuación en los filtros y su ángulo diferenciado]
+
 ## Por dónde empezar
 [2–3 frases: qué serie producir primero y por qué]
+
+## Validar antes de producir
+[Lo que queda por comprobar y cómo: búsquedas concretas en YouTube y Google Trends, y qué resultado confirma la demanda]
 ```
 
-Para ver el nivel esperado, mira los tres planes de ejemplo en `references/ejemplos.md`.
+Para ver el nivel de calidad esperado (no para copiarlo), mira los tres planes de `references/ejemplos.md`. Antes de entregar, pregúntate: "¿Podría haberle dado este mismo plan a cualquier otra persona?". Si la respuesta es sí, vuelve al paso 2.
 
 **Títulos de capítulo:** máximo ~70 caracteres, que abran una pregunta o un misterio emocional ("Su hijo no le escribió en 20 años… hasta que llegó un mensaje"). Los tres capítulos de una serie se conectan con un bucle: lo que deja abierto uno lo resuelve el siguiente.
 

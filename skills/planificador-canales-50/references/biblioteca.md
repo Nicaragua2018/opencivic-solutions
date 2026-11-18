@@ -57,6 +57,8 @@ Punto de partida para sugerir y combinar. No es una lista cerrada: si lo que des
 - Reflexivo y espiritual
 
 ## Combinaciones de partida
+Son ejemplos del formato de una buena sugerencia, no respuestas listas. Úsalas solo si la investigación y los filtros las eligen para esa persona concreta, y en ese caso adáptalas a su contexto.
+
 | Nombre | Públicos | Nichos | Formatos | Estilo | Por qué funciona | Título de ejemplo |
 |---|---|---|---|---|---|---|
 | Abuelos protectores en Navidad | Abuelos que cuidan a sus nietos + Migrantes latinos 50+ | Estafas contadas como historias + Parábolas y fe | Parábola en serie con narrador | Emotivo y tierno | Une el miedo real a las estafas de temporada con historias de familia que se comparten en las fiestas | El regalo de Navidad que nunca llegó |

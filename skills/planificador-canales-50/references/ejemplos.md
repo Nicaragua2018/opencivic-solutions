@@ -1,6 +1,6 @@
 # Planes de ejemplo
 
-Tres planes completos que muestran el nivel esperado. Úsalos como referencia de calidad, no para copiarlos: cada plan nuevo debe nacer de su propia combinación.
+Tres planes completos que muestran el nivel esperado. Úsalos como referencia de calidad, no para copiarlos: cada plan nuevo debe nacer de su propia combinación, su propia investigación y su propio contexto. Sus personajes, nombres, lugares y títulos (el abuelo Tomás, doña Carmen, el barrio de San Miguel, Ramón…) son de este canal: no los reutilices en otros planes.
 
 ---
 
