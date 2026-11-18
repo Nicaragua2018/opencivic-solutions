@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: combinar-dos-opciones
+expected_outcome: |
+  Un solo plan que fusiona las dos audiencias y los dos nichos, con 7 series de capítulos, más títulos con variantes y conceptos de miniatura para la primera serie.
