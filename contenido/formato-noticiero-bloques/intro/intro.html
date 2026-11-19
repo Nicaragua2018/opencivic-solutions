@@ -3,7 +3,7 @@
 <style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body>
 <canvas id="c"></canvas>
 <script>
-// Noticiero en Bloques — intro (16:9), vertical (9:16) y cortinilla. ?m=intro|vertical|stinger
+// Renacer, El Podcast Animado — intro (16:9), vertical (9:16) y cortinilla. ?m=intro|vertical|stinger
 // Render determinista: window.render(t) dibuja el fotograma del segundo t.
 const q=new URLSearchParams(location.search), mode=q.get('m')||'intro';
 const V=mode==='vertical', W=V?1080:1920, H=V?1920:1080; window.DUR=mode==='stinger'?2.2:10;
@@ -19,8 +19,8 @@ function cover(img,dx,dy,dw,dh,zoom=1,fx=.5,fy=.5){const s=Math.max(dw/img.width
 function rr(X,Y,w,h,r){x.beginPath();x.roundRect(X,Y,w,h,r)}
 function logoText(cx,cy,s,t0,t){ // NOTICIERO / EN BLOQUES con letras que caen
  x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';
- [['NOTICIERO',BLUE,'#fff',s],['EN BLOQUES',YEL,BLUE,s*.78]].forEach(([w,fill,stroke,fs],row)=>{
-  x.font=`${fs}px "Luckiest Guy"`;const tw=x.measureText(w).width;let ox=cx-tw/2;const y=cy+(row?s*.95:0);
+ [['RENACER',BLUE,'#fff',s*1.15],['EL PODCAST ANIMADO',YEL,BLUE,s*.56]].forEach(([w,fill,stroke,fs],row)=>{
+  x.font=`${fs}px "Luckiest Guy"`;const tw=x.measureText(w).width;let ox=cx-tw/2;const y=cy+(row?s*1.0:0);
   [...w].forEach((ch,i)=>{const cw=x.measureText(ch).width,k=back((t-t0-row*.35-i*.045)/.45);
    if(k<=0){ox+=cw;return}const yy=y-(1-k)*260;x.save();x.translate(ox+cw/2,yy);
    x.lineWidth=fs*.16;x.strokeStyle=stroke;x.strokeText(ch,0,0);x.fillStyle='rgba(0,0,0,.25)';x.fillText(ch,6,8);x.fillStyle=fill;x.fillText(ch,0,0);x.restore();ox+=cw})})}
@@ -60,7 +60,7 @@ function intro(t){
   if(sp>0){const half=W/2;cover(ST,0,0,W-half*sp,H,1.05+(t-2.9)*.03,.6,.4);x.fillStyle='#000';x.fillRect(W-half*sp-8,0,8,H);cover(PLAZA,W-half*sp,0,half*sp,H,1.1,.45,.5);
    if(sp>.9)pill('● EN DIRECTO · MANAGUA',W-half+40,40,34)}
   if(t<4.4||sp<1)pill('ESTUDIO',40,40,34,BLUE);
-  faldon(H-130,100,40,'ÚLTIMA HORA','Auge y caída de Roberto Clemente',(t-3.2)/.6);
+  faldon(H-130,100,40,'EPISODIO','Auge y caída de Roberto Clemente',(t-3.2)/.6);
   wipe(t,2.9,.5,-1);wipe(t,5.5,.5,1);return}
  if(t<7.9){ // lugar con narradora minimizada
   cover(PLAZA,0,0,W,H,1.05+(t-6)*.04,.5,.55);wipe(t,6,.5,-1);
@@ -68,21 +68,21 @@ function intro(t){
   if(t>6.7)label('31 DIC. 1972',W*.48,H*.32,80);
   band('¿POR QUÉ SUBIÓ A ESE AVIÓN?',H-120,120,62);wipe(t,7.4,.5,1);return}
  sky(t);logoText(W/2,H*.36,170,7.9,t);const k=ease((t-8.6)/.5);x.globalAlpha=k;x.font='900 46px Inter';x.fillStyle=NAVY;x.textAlign='center';
- x.fillText('HISTORIA · GEOPOLÍTICA · FILOSOFÍA',W/2,H*.36+320);x.globalAlpha=1;faldon(H-200,110,46,'ÚLTIMA HORA','Tu titular aquí',(t-8.9)/.6);wipe(t,7.9,.5,-1)}
+ x.fillText('HISTORIA · GEOPOLÍTICA · FILOSOFÍA',W/2,H*.36+320);x.globalAlpha=1;faldon(H-200,110,46,'EPISODIO','Tu titular aquí',(t-8.9)/.6);wipe(t,7.9,.5,-1)}
 function vertical(t){
  if(t<2.9){sky(t);logoText(W/2,H*.4,140,.2,t);const k=ease((t-1.6)/.5);x.globalAlpha=k;x.font='900 40px Inter';x.fillStyle=NAVY;x.textAlign='center';x.fillText('LA HISTORIA, CONTADA EN DIRECTO',W/2,H*.4+280);x.globalAlpha=1;wipe(t,2.4,.5,1);return}
  if(t<7.9){ // tres franjas
   cover(PLAZA,0,0,W,880,1.05+(t-2.9)*.03,.4,.5);pill('● EN DIRECTO',40,150,34);
   if(t>3.5)label(t<5.4?'MANAGUA, 1972':'31 DIC. 1972',300,790,62);
   band(t<5.4?'UN TERREMOTO\nDESTRUYÓ LA CIUDAD':'¿POR QUÉ SUBIÓ\nA ESE AVIÓN?',880,200,68);
-  cover(ST,0,1080,W,840,1.02+(t-2.9)*.02,.5,.4);faldon(1700,90,34,'ÚLTIMA HORA','Auge y caída de Roberto Clemente',(t-3.4)/.6);
+  cover(ST,0,1080,W,840,1.02+(t-2.9)*.02,.5,.4);faldon(1700,90,34,'EPISODIO','Auge y caída de Roberto Clemente',(t-3.4)/.6);
   wipe(t,2.9,.5,-1);wipe(t,7.4,.5,1);return}
  sky(t);logoText(W/2,H*.38,140,7.9,t);const k=ease((t-8.6)/.5);x.globalAlpha=k;x.font='900 40px Inter';x.fillStyle=NAVY;x.textAlign='center';
- x.fillText('HISTORIA · GEOPOLÍTICA',W/2,H*.38+270);x.fillText('FILOSOFÍA',W/2,H*.38+325);x.globalAlpha=1;faldon(H-420,100,36,'ÚLTIMA HORA','Tu titular aquí',(t-8.9)/.6);wipe(t,7.9,.5,-1)}
+ x.fillText('HISTORIA · GEOPOLÍTICA',W/2,H*.38+270);x.fillText('FILOSOFÍA',W/2,H*.38+325);x.globalAlpha=1;faldon(H-420,100,36,'EPISODIO','Tu titular aquí',(t-8.9)/.6);wipe(t,7.9,.5,-1)}
 function stinger(t){ // 2.2 s: bloques cubren, logo, bloques descubren
  x.fillStyle='#000';x.fillRect(0,0,W,H);if(t<1.2)wipe(t,0,.6,1);else{sky(t);logoText(W/2,H*.42,150,.95,t);wipe(t,1.6,.6,-1)}
  if(t>=.6&&t<1.2){sky(t);logoText(W/2,H*.42,150,.6,t)}}
 window.render=t=>{x.clearRect(0,0,W,H);(mode==='vertical'?vertical:mode==='stinger'?stinger:intro)(t)};
-Promise.all([load('plaza.jpg'),load('estudio.jpg'),document.fonts.load('80px "Luckiest Guy"'),document.fonts.load('900 40px Merriweather'),document.fonts.load('900 40px Inter'),document.fonts.load('800 40px Inter')]).then(([a,b])=>{PLAZA=a;STUDIO=b;ST=studioImg();window.__go=true;
+Promise.all([load('plaza.jpg'),load('estudio.jpg'),document.fonts.load('80px "Luckiest Guy"'),document.fonts.load('900 40px Merriweather'),document.fonts.load('900 40px Inter'),document.fonts.load('800 40px Inter')]).then(([a,b])=>{PLAZA=a;STUDIO=b;ST=STUDIO;window.__go=true;
  if(!q.get('frames')){const s=performance.now();(function f(){render((performance.now()-s)/1000%DUR);requestAnimationFrame(f)})()}});
 </script></body></html>
