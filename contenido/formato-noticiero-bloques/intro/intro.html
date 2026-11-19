@@ -53,12 +53,12 @@ function studioImg(){const c=document.createElement('canvas');c.width=STUDIO.wid
  return c}
 let ST;
 function intro(t){
- if(t<2.9){sky(t);logoText(W/2,H*.42,170,.2,t);const k=ease((t-1.6)/.5);x.globalAlpha=k;x.font='900 44px Inter';x.fillStyle=NAVY;x.textAlign='center';x.fillText('LA HISTORIA, CONTADA EN DIRECTO',W/2,H*.42+330);x.globalAlpha=1;wipe(t,2.4,.5,1);return}
+ if(t<2.9){sky(t);logoText(W/2,H*.42,170,.2,t);const k=ease((t-1.6)/.5);x.globalAlpha=k;x.font='900 44px Inter';x.fillStyle=NAVY;x.textAlign='center';x.fillText('LA HISTORIA, DESDE EL LUGAR DE LOS HECHOS',W/2,H*.42+330);x.globalAlpha=1;wipe(t,2.4,.5,1);return}
  if(t<6){ // estudio + conexion
   cover(ST,0,0,W,H,1.05+(t-2.9)*.03,.5,.35);
   const sp=ease((t-4.3)/.5);
   if(sp>0){const half=W/2;cover(ST,0,0,W-half*sp,H,1.05+(t-2.9)*.03,.6,.4);x.fillStyle='#000';x.fillRect(W-half*sp-8,0,8,H);cover(PLAZA,W-half*sp,0,half*sp,H,1.1,.45,.5);
-   if(sp>.9)pill('● EN DIRECTO · MANAGUA',W-half+40,40,34)}
+   if(sp>.9)pill('● EN EL LUGAR DE LOS HECHOS',W-half+40,40,34)}
   if(t<4.4||sp<1)pill('ESTUDIO',40,40,34,BLUE);
   faldon(H-130,100,40,'EPISODIO','Auge y caída de Roberto Clemente',(t-3.2)/.6);
   wipe(t,2.9,.5,-1);wipe(t,5.5,.5,1);return}
@@ -70,9 +70,9 @@ function intro(t){
  sky(t);logoText(W/2,H*.36,170,7.9,t);const k=ease((t-8.6)/.5);x.globalAlpha=k;x.font='900 46px Inter';x.fillStyle=NAVY;x.textAlign='center';
  x.fillText('HISTORIA · GEOPOLÍTICA · FILOSOFÍA',W/2,H*.36+320);x.globalAlpha=1;faldon(H-200,110,46,'EPISODIO','Tu titular aquí',(t-8.9)/.6);wipe(t,7.9,.5,-1)}
 function vertical(t){
- if(t<2.9){sky(t);logoText(W/2,H*.4,140,.2,t);const k=ease((t-1.6)/.5);x.globalAlpha=k;x.font='900 40px Inter';x.fillStyle=NAVY;x.textAlign='center';x.fillText('LA HISTORIA, CONTADA EN DIRECTO',W/2,H*.4+280);x.globalAlpha=1;wipe(t,2.4,.5,1);return}
+ if(t<2.9){sky(t);logoText(W/2,H*.4,140,.2,t);const k=ease((t-1.6)/.5);x.globalAlpha=k;x.font='900 40px Inter';x.fillStyle=NAVY;x.textAlign='center';x.fillText('LA HISTORIA, DESDE',W/2,H*.4+270);x.fillText('EL LUGAR DE LOS HECHOS',W/2,H*.4+325);x.globalAlpha=1;wipe(t,2.4,.5,1);return}
  if(t<7.9){ // tres franjas
-  cover(PLAZA,0,0,W,880,1.05+(t-2.9)*.03,.4,.5);pill('● EN DIRECTO',40,150,34);
+  cover(PLAZA,0,0,W,880,1.05+(t-2.9)*.03,.4,.5);pill('● EN SITIO · MANAGUA',40,150,34);
   if(t>3.5)label(t<5.4?'MANAGUA, 1972':'31 DIC. 1972',300,790,62);
   band(t<5.4?'UN TERREMOTO\nDESTRUYÓ LA CIUDAD':'¿POR QUÉ SUBIÓ\nA ESE AVIÓN?',880,200,68);
   cover(ST,0,1080,W,840,1.02+(t-2.9)*.02,.5,.4);faldon(1700,90,34,'EPISODIO','Auge y caída de Roberto Clemente',(t-3.4)/.6);
