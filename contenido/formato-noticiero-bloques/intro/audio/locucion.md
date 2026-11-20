@@ -6,6 +6,13 @@ Dos voces de ElevenLabs:
 
 La música y los efectos ya están dentro de `intro.mp4`, `vertical.mp4` y `stinger.mp4` (generados con `sonido.py`). La locución se mezcla encima, con la música bajada unos 8 dB mientras se habla.
 
+## Versión provisional (ya mezclada)
+Mientras no haya voces de ElevenLabs, `intro.mp4` y `vertical.mp4` llevan voces gratuitas de Microsoft Edge (`edge-tts`):
+- Él: `es-MX-JorgeNeural` (velocidad −8 %, tono −6 Hz), en lugar de Faraón.
+- Ella: `es-MX-DaliaNeural`.
+Las frases están en `voz/` y la mezcla en `intro-mezcla.wav` y `vertical-mezcla.wav` (música bajada automáticamente cuando hablan).
+Para cambiar a Faraón: sustituir los WAV de `voz/` por los de ElevenLabs con el mismo nombre y repetir la mezcla.
+
 ## Intro horizontal y vertical (10 s)
 
 | Tiempo | Voz | Texto | Qué se ve |
